@@ -40,6 +40,13 @@ into a directory. *cd* into this directory and run::
     > cd pyzmail-X.X.X
     > python setup.py install 
 
+
+Sources
+--------
+
+**pyzmail** sources are also available on **github**
+`https://github.com/aspineux/pyzmail <https://github.com/aspineux/pyzmail>`_
+
 Support for Python 3.x
 ----------------------
 .. sidebar:: Python 3.2+ supported
