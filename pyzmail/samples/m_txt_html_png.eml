@@ -1,0 +1,36 @@
+From: sender@domain.com
+To: recipient@domain.com
+Date: Tue, 7 Jun 2011 16:32:17 +0200
+Subject: mime includind text and html part
+Content-Type: multipart/mixed; boundary=mixed
+
+--mixed
+Content-Type: multipart/alternative; boundary=alternative
+
+--alternative
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hello World
+
+--alternative
+Content-Type: text/html; charset=ISO-8859-1
+
+Hello World<br>
+<br>
+
+--alternative--
+--mixed
+Content-Type: image/png; name="smile.png"
+Content-Disposition: attachment; filename="smile.png"
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOBAMAAADtZjDiAAAAMFBMVEUQEAhaUjlaWlp7e3uMezGU
+hDGcnJy1lCnGvVretTnn5+/3pSn33mP355T39+//75SdwkyMAAAACXBIWXMAAA7EAAAOxAGVKw4b
+AAAAB3RJTUUH2wcJDxEjgefAiQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0aW9u
+ABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3DwkAAAAJ
+dEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0V2FybmluZwDA
+G+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAABnRFWHRUaXRsZQCo
+7tInAAAAaElEQVR4nGNYsXv3zt27TzHcPup6XDBmDsOeBvYzLTynGfacuHfm/x8gfS7tbtobEM3w
+n2E9kP5n9N/oPZA+//7PP5D8GSCYA6RPzjlzEkSfmTlz+xkgffbkzDlAuvsMWAHDmt0g0AUAmyNE
+wLAIvcgAAAAASUVORK5CYII=
+--mixed--

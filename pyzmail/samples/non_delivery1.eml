@@ -1,0 +1,77 @@
+Date: Tue, 21 Jun 2011 17:46:06 +0200
+From: Mail Delivery Subsystem <MAILER-DAEMON@domain.eu>
+Message-Id: <201106211546.p5LFk6LA016280>
+To: <recipient@domain.eu>
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+        boundary="p5LFk6LA016280"
+Subject: Returned mail: see transcript for details
+
+This is a MIME-encapsulated message
+
+--p5LFk6LA016280.1308671166/mail22.consilium.eu.int
+
+The original message was received at Tue, 21 Jun 2011 17:34:39 +0200
+from ex-fe-02.consilium.eu.int [170.255.63.2]
+
+   ----- The following addresses had permanent fatal errors -----
+<jean-claude.piris@consilium.europa.eu>
+    (reason: 554 5.4.6 Too many hops)
+
+   ----- Transcript of session follows -----
+554 5.4.6 Too many hops 26 (25 max): from <c.stratulat@epc.eu> via
+localhost, to <jean-claude.piris@consilium.europa.eu>
+
+--p5LFk6LA016280.1308671166/mail22.consilium.eu.int
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; mail22.consilium.eu.int
+Arrival-Date: Tue, 21 Jun 2011 17:34:39 +0200
+
+Final-Recipient: RFC822; jean-claude.piris@consilium.europa.eu
+Action: failed
+Status: 5.4.6
+Diagnostic-Code: SMTP; 554 5.4.6 Too many hops
+Last-Attempt-Date: Tue, 21 Jun 2011 17:46:06 +0200
+
+--p5LFk6LA016280.1308671166/mail22.consilium.eu.int
+Content-Type: message/rfc822
+
+Subject: UPDATE! - EPC INVITATION: Comitology after Lisbon: a more
+democratic and efficient system? _ 28 June 2011_ 14.00-16.00
+Date: Tue, 21 Jun 2011 13:47:21 +0200
+Message-ID: <7D454E7C81A5A840AC375C2C631383B9048CC6F6@EPCmail.theepc.be>
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+Thread-Topic: UPDATE! - EPC INVITATION: Comitology after Lisbon: a more
+democratic and efficient system? _ 28 June 2011_ 14.00-16.00
+Thread-Index: AcwwCPrKQPESKqBsQTyZ5bqdN9hjCA==
+X-Priority: 1
+Priority: Urgent
+Importance: high
+From: "Corina Stratulat" <c.stratulat@epc.eu>
+Bcc: 
+X-OriginalArrivalTime: 21 Jun 2011 11:49:28.0860 (UTC)
+FILETIME=[46DC8DC0:01CC3009]
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01CC3008.FB2C609F
+Content-Type: multipart/alternative;
+        boundary="----_=_NextPart_002_01CC3008.FB2C609F"
+
+------_=_NextPart_002_01CC3008.FB2C609F
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Mail content
+
+------_=_NextPart_002_01CC3008.FB2C609F
+Content-Type: text/html;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+
+

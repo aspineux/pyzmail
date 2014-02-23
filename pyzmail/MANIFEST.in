@@ -1,0 +1,6 @@
+include README.txt Changelog.txt LICENSE.txt
+include Makefile MANIFEST.in epydoc.css
+include distribute_setup.py
+include man/*
+include docs/Makefile
+include docs/source/*

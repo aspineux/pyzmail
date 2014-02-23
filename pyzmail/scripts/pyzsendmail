@@ -1,0 +1,293 @@
+#!/bin/env python
+#
+# pyzmail/pyzsendmail
+# (c) Alain Spineux <alain.spineux@gmail.com>
+# http://www.magiksys.net/pyzmail
+# Released under GPL
+
+"""compose and send email"""
+
+import sys
+import os
+import optparse
+import locale
+
+__version__='1.0'
+
+try:
+    import pyzmail
+except ImportError:
+    if os.path.isdir('../pyzmail'):
+        sys.path.append(os.path.abspath('..'))
+    elif os.path.isdir('pyzmail'):
+        sys.path.append(os.path.abspath('.'))
+    import pyzmail
+
+class BadEmailAddress(ValueError):
+    pass
+
+def handle_addr(addr):
+    """
+    split an address in its name and mail address 
+    
+    >>> handle_addr('Foo Bar <foo.bar@example.com>')
+    ('Foo Bar', 'foo.bar@example.com')
+    >>> handle_addr(' Foo Bar  <  foo.bar@example.com  >  ')
+    ('Foo Bar', 'foo.bar@example.com')
+    >>> handle_addr('<foo.bar@example.com>')
+    ('foo.bar@example.com', 'foo.bar@example.com')
+    >>> handle_addr('foo.bar@example.com')
+    ('foo.bar@example.com', 'foo.bar@example.com')
+    >>> handle_addr('foo.barATexample.com')
+    Traceback (most recent call last):
+    BadEmailAddress: foo.barATexample.com
+    >>> handle_addr('Foo Bar foo.bar@example.com')
+    Traceback (most recent call last):
+    BadEmailAddress: Foo Bar foo.bar@example.com
+    >>> handle_addr('Foo Bar <foo.bar@example.com')
+    Traceback (most recent call last):
+    BadEmailAddress: Foo Bar <foo.bar@example.com
+    >>> handle_addr('Foo Bar foo.bar@example.com>')
+    Traceback (most recent call last):
+    BadEmailAddress: Foo Bar foo.bar@example.com>
+    """
+    
+    addr=addr.strip()
+    pos=addr.rfind('<')
+    if pos>=0 and addr.endswith('>'):
+        address=addr[pos+1:-1].strip()
+        name=addr[:pos].strip()
+        if not name:
+            name=address
+    else:
+        address=addr.strip()
+        name=address
+
+    if not pyzmail.email_address_re.match(address):
+        raise BadEmailAddress, address
+    
+    return name, address
+
+
+def handle_content(arg, mail_charset):
+    """
+    handle file content argument
+    
+    format: encoding:@filename
+            encoding:content
+    return (encoding, content)
+    """
+    
+    try:
+        encoding, content=arg.split(':', 1)
+    except ValueError:
+        parser.error('Wrong file argument: '+arg)
+           
+    if content.startswith('@'):
+        filename=content[1:]
+        if filename=='-':
+            content=sys.stdin.read()
+        else:
+            if not os.path.isfile(filename):
+                parser.error('file not found: '+filename)
+            try:        
+                content=open(filename, 'rt').read()
+            except IOError, e:
+                parser.error(str(e))
+
+    if not encoding:
+        encoding=mail_charset
+    return content, encoding
+        
+def handle_attachment(arg):
+    """
+    handle attachment argument
+    
+    format: maintype/subtpe:filename:target_file[:charset]
+            encoding:content
+    return (data, maintype, subtype, filename, charset)
+    """
+    
+    try:
+        type, filename, target=arg.split(':', 2)
+        try:
+            target, charset=target.split(':', 1)
+        except ValueError:
+            charset=None
+    except ValueError:
+        parser.error('Wrong attachment argument: '+arg)
+
+    try:
+        maintype, subtype=type.split('/')
+    except ValueError:
+        parser.error('Invalid type: '+type)
+
+    try:        
+        data=open(target, 'r').read()
+    except IOError, e:
+        parser.error(str(e))
+
+    return data, maintype, subtype, filename, charset
+
+
+def check_addr(value):
+    try:
+        ret=handle_addr(value)
+    except BadEmailAddress:
+        parser.error('invalid address: '+value)
+        
+    return ret
+
+def check_addresses(values):
+    ret=[]
+    for value in values:
+        try:
+            ret.append(handle_addr(value))
+        except BadEmailAddress:
+            parser.error('invalid address: '+value)
+        
+    return ret
+   
+default_encoding=locale.getdefaultlocale()[1]
+if not default_encoding:
+    # use default per platform
+    if sys.platform in ('win32', ):
+        default_encoding='windows-1252'
+    else:
+        default_encoding='utf-8'
+
+def gen_parser():
+    parser=optparse.OptionParser()
+    
+    parser.add_option("-V", "--version", action="store_true", dest="version", help="display version")
+    
+    parser.add_option("-H", "--smtp-host", dest="smtp_host", help="SMTP host relay", metavar="name_or_ip", default='localhost')
+    parser.add_option("-p", "--smtp-port", dest="smtp_port", help="SMTP port (default=25)", metavar="port", type='int', default='25')
+    parser.add_option("-L", "--smtp-login", dest="smtp_login", help="SMTP login (if authentication is required)", metavar="login", type='string')
+    parser.add_option("-P", "--smtp-password", dest="smtp_password", help="SMTP password (if authentication is required)", metavar="password", type='string')
+    parser.add_option("-m", "--smtp-mode", dest="smtp_mode", help="smtp mode in 'normal', 'ssl', 'tls'. (default='normal')", metavar="mode", type='choice', default='normal', choices=('normal', 'ssl', 'tls'))
+    
+    if sys.version_info<=(3, 0):
+        parser.add_option("-A", "--arg-charset", dest="arg_charset", help="these arguments charset (default=%s)" % (default_encoding, ), metavar="charset", type='string', default=default_encoding)
+    else:
+        # how to re-decode the already decoded argument from py3k ?
+        pass
+
+    parser.add_option("-C", "--mail-charset", dest="mail_charset", help="default charset (default=%s)" % (default_encoding, ), metavar="charset", type='string', default=default_encoding)
+    
+    parser.add_option("-f", "--from", dest="sender", help="sender address", metavar="sender", type='string')
+    parser.add_option("-t", "--to", action="append", dest="to", help="add one recipient address", metavar="recipient", type='string', default=[])
+    parser.add_option("-c", "--cc", action="append", dest="cc", help="add one cc address", metavar="recipient", type='string', default=[])
+    parser.add_option("-b", "--bcc", action="append", dest="bcc", help="add one bcc address", metavar="recipient", type='string', default=[])
+    
+    parser.add_option("-s", "--subject", dest="subject", help="message subject", metavar="subject", type='string', default='no subject')
+    
+    parser.add_option("-T", "--text", dest="text", help="text content '[text_charset]:@filename' or '[text_charset]:content' for example", metavar="text", type='string', default='')
+    parser.add_option("-M", "--html", dest="html", help="html content '[text_charset]:@filename' or '[text_charset]:content'", metavar="html", type='string', default='')
+    parser.add_option("-a", "--attach", action="append", dest="attachments", help="add an attachment 'maintype/subtype:filename:target_file[:text_charset]'", metavar="file", type='string', default=[])
+    parser.add_option("-e", "--embed", action="append", dest="embeddeds", help="add embedded data 'maintype/subtype:content-id:target_file[:text_charset]'", metavar="file", type='string', default=[])
+    parser.add_option("-E", "--eicar", action="store_true", dest="eicar", default=False, help="include eicar virus in attachments")
+    return parser
+
+if sys.version_info<=(3, 0):
+    # first decoding to get the arg_charset and decode the command line arguments
+    parser=gen_parser()
+    (options, args) = parser.parse_args()
+    arg_charset=options.arg_charset
+    sys_argv=map(lambda x:x.decode(arg_charset), sys.argv[:])
+else:
+    # py3k does it well 
+    sys_argv=sys.argv[:]
+
+# use a new parser
+parser=gen_parser()
+(options, args) = parser.parse_args(sys_argv)
+
+#import doctest
+#doctest.testmod()
+
+if options.version:
+    print 'pyzmail version: %s' % (pyzmail.__version__, )
+    print 'pyzsendmail version: %s' % (__version__, )
+    print 'default arg-charset: %s' % (default_encoding, )
+    print 'stdin.encoding: %s' % (sys.stdin.encoding, )
+    print 'stdout.encoding: %s' % (sys.stdout.encoding, )
+    sys.exit(9)
+    
+# Misc
+mail_charset=options.mail_charset
+subject=options.subject
+smtp_login=options.smtp_login
+if smtp_login:
+    smtp_login=smtp_login.encode('utf-8')
+smtp_password=options.smtp_password
+if smtp_password:
+    smtp_password=smtp_password.encode('utf-8')
+
+# Addresses From, To, Cc and Bcc
+if not options.sender:
+    parser.error('option required: --from')
+sender=check_addr(options.sender)
+
+to=[]
+if options.to:
+    to=check_addresses(options.to)
+
+cc=[]
+if options.cc:
+    cc=check_addresses(options.cc)
+
+bcc=[]
+if options.bcc:
+    bcc=check_addresses(options.bcc)
+ 
+if not to and not cc and not bcc:
+     parser.error('no recipient')
+
+# Content 
+if options.text:
+    text=handle_content(options.text, mail_charset)
+else:
+    text=None
+        
+if options.html:
+    html=handle_content(options.html, mail_charset)
+else:
+    html=None
+
+# Attachments
+# type:filename:target_file:charset
+# image/png:file.png:/tmp/file.png:
+attachments=[]
+for attachment in options.attachments:
+    attachment=handle_attachment(attachment)
+    # print attachment[1:]
+    attachments.append(attachment)
+
+if options.eicar:
+    attachments.append(
+        ('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*', \
+         'application', 'octet-stream', 'eicar.com', None))
+
+embeddeds=[]
+for embedded in options.embeddeds:
+    embedded=handle_attachment(embedded)
+    # print embedded[1:]
+    embeddeds.append(embedded)
+
+payload, mail_from, rcpt_to, msg_id=pyzmail.compose_mail(sender, to, subject, mail_charset, text, html, attachments=attachments, embeddeds=embeddeds, cc=cc, bcc=bcc, message_id_string='pyzsendmail')
+ret=pyzmail.send_mail(payload, mail_from, rcpt_to, options.smtp_host, smtp_port=options.smtp_port, smtp_mode=options.smtp_mode, smtp_login=options.smtp_login, smtp_password=options.smtp_password)
+    
+if isinstance(ret, dict):
+    if ret:
+        print 'failed recipients:'
+        for recipient, (code, msg) in ret.iteritems():
+            print '%d %s\t%s' % (code, recipient, msg)
+        sys.exit(1)
+    else:
+        sys.exit(0)
+else:
+    print 'error:'
+    print ret
+    sys.exit(2)
+

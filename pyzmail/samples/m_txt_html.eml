@@ -1,0 +1,18 @@
+From: sender@domain.com
+To: recipient@domain.com
+Date: Tue, 7 Jun 2011 16:32:17 +0200
+Subject: mime includind text and html part
+Content-Type: multipart/alternative; boundary=alternative
+
+--alternative
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hello World
+
+--alternative
+Content-Type: text/html; charset=ISO-8859-1
+
+Hello World<br>
+<br>
+
+--alternative--

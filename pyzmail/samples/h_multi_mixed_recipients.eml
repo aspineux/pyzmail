@@ -1,0 +1,8 @@
+From: Sender =?UTF-8?Q?Sender=20of=20mail?= <sender@domain.com>
+To: Recipient First <recipient1@domain.com>, =?UTF-8?Q?Recipient=20Second?= <recipient2@domain.com>,  
+ =?iso-8859-1?B?VHJvaXNp6G1l?= <third@domain.com>, forth@domain.com
+Date: Tue, 7 Jun 2011 16:32:17 +0200
+Subject: Multi mixed recipients
+
+Hello World
+

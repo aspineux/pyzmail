@@ -1,0 +1,44 @@
+2013-07-07 pyzmail-1.0.2
+  parse.py:
+    - fix a bug: AttributeError: 'str' object has no attribute 'get_content_type'
+      File "parse.py" line 333, in _search_message_content
+      when parsing a badly formated 'multipart' email
+      thanks to lyeph
+
+2013-05-05 pyzmail-1.0.1
+  parse.py:
+    - fix: "parse.py filename" raise an error, PyzMessage 
+      don't accept a <file> as argument.
+
+2013-01-03 pyzmail-1.0.0
+  generate:
+    python3.x function smtp.login() require string
+
+  documentation:
+    - gmail server require 'tls' mode for sending
+
+2011-09-16 pyzmail-0.9.9
+  pyzsendmail:
+    - small bug about arg_charset  
+
+
+2011-09-13 pyzmail-0.9.8
+  all:
+  - support for python 3.2
+  - added tests module
+  - some documentation cosmetic
+  
+  pyzsendmail:
+  - removed a old debug message (print)
+  - return 0 for success, 1 for error, 2 for failed addresses
+  
+  generate:
+  - Message-ID instead of Messsage-ID with 3 's' 
+  - add support for free header fields 
+  
+  parse:
+  - PzMessage renamed into PyzMessage, PzMessage is now deprecated
+
+2011-08-21 pyzmail-0.9.0
+  - first release
+

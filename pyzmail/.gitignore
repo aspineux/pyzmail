@@ -1,0 +1,14 @@
+*.pyc
+.settings/
+.project
+.pydevproject
+__pycache__/
+build/
+docs/build
+dist/
+man/
+pyzinfomail.exe
+pyzsendmail.exe
+pyzmail.egg-info/
+upload.lftp
+

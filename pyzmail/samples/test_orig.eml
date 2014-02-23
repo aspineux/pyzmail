@@ -1,0 +1,63 @@
+Return-path: <6FQEP9YTQFYNB991CY7UHBM3UD40O7N1@bad.abc.com>
+Envelope-to: <abc@123.com>,
+<def@123.com>
+Cc: <xyz@abc.com>
+Delivery-date: Fri, 24 May 2013 10:08:53 -0600
+Received: from [192.168.0.22] ([192.168.0.72:49206] helo=pimailer) by bad.abc.com (envelope-from <AQ9AQ9V55A6CZZR3HWGNIGJ0PL52NUK5@bad.abc.com>) (ecelerity 2.2.2.45 r(34222M)) with ESMTP id CF/CD-45080-44KAKU1I; Fri, 24 May 2013 10:08:53 -0600
+Reply-To: <abc@bad.abc.com>
+Bounces_to: abc.1A15KLMF5WAX7L4Z1K068C5DZG4YUAEAL@bad.abc.com
+Message-ID: <OWMHDJGATMW51Z4DQAQDBTT58NEXYC39.5804.9855.pimailer.DumpShot.2@bad.abc.com>
+Date: Fri, 24 May 2013 10:08:53 -0600
+From: "abc" <abc@bad.abc.com>
+Subject: This is an email
+To: <abc@123.com>,
+<def@123.com>
+Cc: <xyz@abc.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+boundary="----=_Part_51109_1557446830.5619341964557"
+
+This is a multi-part message in MIME format.
+------=_Part_51109_1557446830.5619341964557
+Content-Type: text/plain; charset=koi8-r; format=flowed
+Content-Transfer-Encoding: 8bit
+
+e-mail part one
+
+------=_Part_51109_1557446830.5619341964557
+Content-Type: multipart/related;
+boundary="----=_Part_51109_1557446830.5619341964557"
+
+
+------=_Part_51109_1557446830.5619341964557
+Content-Type: text/html; charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+head
+</head>
+<body bgcolor=3D"#ffffff" text=3D"#000000">
+e-mail part one html
+</body>
+
+</html>
+------=_Part_51109_1557446830.5619341964557
+
+------=_Part_51109_1557446830.5619341964557
+Content-Type: application/zip;
+name="email.zip"
+Content-Transfer-Encoding: base64
+Content-ID: <c1f02e7dc142$581d826a$759db818$ABPBTII>
+Content-Disposition: inline;
+filename="email.zip"
+
+------=_Part_51109_1557446830.5619341964557--
+
+UEsDBAoAAgAAAEdbB0N3TptfHQAAAB0AAAAHABwAYWJjLnR4dFVUCQADFWcCUhVnAlJ1eAsAAQT1
+AQAABBQAAAB0aGlzIGlzIGFuIGVtYWlsIGF0dGFjaG1lbnQuClBLAQIeAwoAAgAAAEdbB0N3Tptf
+HQAAAB0AAAAHABgAAAAAAAEAAACkgQAAAABhYmMudHh0VVQFAAMVZwJSdXgLAAEE9QEAAAQUAAAA
+UEsFBgAAAAABAAEATQAAAF4AAAAAAA==
+
+------=_Part_51109_1557446830.5619341964557--
