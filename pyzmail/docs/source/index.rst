@@ -9,15 +9,15 @@ pyzmail: Python easy mail library
 =================================
 
 **pyzmail** is a **high level** mail library for Python. It provides functions and 
-classes that help to **read**, **compose** and **send** emails. **pyzmail**
+classes that help for **reading**, **composing** and **sending** emails. **pyzmail**
 exists because their is no reasons that handling mails with Python would be more 
 difficult than with popular mail clients like Outlook or Thunderbird. 
-**pyzmail** hides the difficulties of the MIME structure and MIME 
-encoding/decoding. It also hides the problem of the internationalized header
-encoding/decoding.
+**pyzmail** hides the complexity of the MIME structure and MIME 
+encoding/decoding. It also make the problems of the internationalization
+encoding/decoding simpler.
 
-Get pyzmail
------------
+Download and Install
+--------------------
 
 **pyzmail** is available for Python **2.6+** and **3.2+**
 from `pypi <http://pypi.python.org/pypi/pyzmail>`_ and can
@@ -40,9 +40,8 @@ into a directory. *cd* into this directory and run::
     > cd pyzmail-X.X.X
     > python setup.py install 
 
-
-Sources
---------
+Binary version of the scripts for **Windows** pyzmail-|release|-win32.zip can 
+be downloaded from `here <http://www.magiksys.net/download/pyzmail>`__.
 
 **pyzmail** sources are also available on **github**
 `https://github.com/aspineux/pyzmail <https://github.com/aspineux/pyzmail>`_
@@ -410,14 +409,10 @@ pyzinfomail
 from a file and printing most important information. Mostly to show how to use 
 **pyzmail** library. Read the :doc:`manual <man/pyzinfomail>` for more.
 
+License
+-------
 
-Download
---------
-
-**pyzmail** can be downloaded from the `Python Package Index <http://pypi.python.org/pypi/pyzmail>`_.
-
-Binary version of the scripts for **Windows** pyzmail-|release|-win32.zip can 
-be downloaded from `here <http://www.magiksys.net/download/pyzmail>`__.
+**pyzmail** iis released under the GNU Lesser General Public License ( LGPL ).
 
 Links
 -----
