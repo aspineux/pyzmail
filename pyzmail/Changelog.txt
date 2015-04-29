@@ -1,6 +1,11 @@
+2015-xx-xx pyzmail-1.0.
+   generate.py:
+    - header values can be email.header.Header instances (or unicode)
+
 2014-05-30 pyzmail-1.0.3
   all:
     - upgarde distribute_setup.py up to 0.6.49, to see if it work better with python 3.4
+      not tested
  
 2013-07-07 pyzmail-1.0.2
   parse.py:

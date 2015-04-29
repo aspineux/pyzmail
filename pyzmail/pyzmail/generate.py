@@ -271,7 +271,8 @@ def complete_mail(message, sender, recipients, subject, default_charset, cc=[], 
     use curent time C{time.time()} instead.
     @type headers: list of tuple
     @keyword headers: a list of C{(field, value)} tuples to fill in the mail 
-    header fields. Values are encoded using I{default_charset}.
+    header fields. values can be instances of email.header.Header or unicode strings
+    that will be encoded using I{default_charset}.
     @rtype: tuple
     @return: B{(payload, mail_from, rcpt_to, msg_id)}
         - I{payload} (str) is the content of the email, generated from the message
@@ -335,7 +336,10 @@ def complete_mail(message, sender, recipients, subject, default_charset, cc=[], 
         msg_id=None
         
     for field, value in headers:
-        message[field]=email.header.Header(value, default_charset)
+        if isinstance(value, email.header.Header):
+            message[field]=value
+        else:
+            message[field]=email.header.Header(value, default_charset)
 
     payload=message.as_string()
     
