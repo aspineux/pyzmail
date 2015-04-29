@@ -1,3 +1,7 @@
+2014-05-30 pyzmail-1.0.3
+  all:
+    - upgarde distribute_setup.py up to 0.6.49, to see if it work better with python 3.4
+ 
 2013-07-07 pyzmail-1.0.2
   parse.py:
     - fix a bug: AttributeError: 'str' object has no attribute 'get_content_type'
