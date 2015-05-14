@@ -1,6 +1,6 @@
 epydoc_target=docs/build/html/api
-python3=/usr/bin/python3.2
-2to3=/usr/bin/2to3
+python3=/usr/bin/python3.4
+2to3=/usr/bin/2to3-3.4
 
 epydoc:
 	mkdir -p ${epydoc_target}

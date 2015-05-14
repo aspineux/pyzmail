@@ -436,6 +436,7 @@ def get_mail_parts(msg):
     <BLANKLINE>
     ZGF0YQ==
     --===limit1==--
+    <BLANKLINE>
     >>> parts=get_mail_parts(msg)
     >>> parts
     [MailPart<*text/plain charset=us-ascii len=9>, MailPart<image/png filename=image.png len=4>]

@@ -29,7 +29,11 @@ class TestParse(unittest.TestCase):
         self.assertEqual(decode_mail_header('=?utf-8?b?RnJhbsOnYWlz?='), u'Fran\xe7ais')
         self.assertEqual(decode_mail_header('=?iso-8859-1?q?Courrier_=E8lectronique_?= =?utf8?q?Fran=C3=A7ais?='), u'Courrier \xe8lectronique Fran\xe7ais')
         self.assertEqual(decode_mail_header('=?iso-8859-1?q?Courrier_=E8lectronique_?= =?utf-8?b?RnJhbsOnYWlz?='), u'Courrier \xe8lectronique Fran\xe7ais')
-        self.assertEqual(decode_mail_header('h_subject_q_iso_8858_1 : =?ISO-8859-1?Q?Fran=E7ais=E20accentu=E9?= !'), u'h_subject_q_iso_8858_1 :Fran\xe7ais\xe20accentu\xe9!')
+        if sys.version_info >= (3,):
+            self.assertEqual(decode_mail_header('h_subject_q_iso_8858_1 : =?ISO-8859-1?Q?Fran=E7ais=E20accentu=E9?= !'), u'h_subject_q_iso_8858_1 : Fran\xe7ais\xe20accentu\xe9 !')
+        else:
+            # 2.X is a bit buggy and add white spaces
+            self.assertEqual(decode_mail_header('h_subject_q_iso_8858_1 : =?ISO-8859-1?Q?Fran=E7ais=E20accentu=E9?= !'), u'h_subject_q_iso_8858_1 :Fran\xe7ais\xe20accentu\xe9!')
 
     def test_get_mail_addresses(self):
         """test get_mail_addresses()"""
@@ -116,7 +120,8 @@ Content-Description: the description
 Content-ID: <this.is.the.normaly.unique.contentid>
 
 ZGF0YQ==<HERE1>
---===limit1==--"""
+--===limit1==--
+"""
 
         if sys.version_info<(3, 0):
             expected_raw=expected_raw.replace('<HERE1>','')

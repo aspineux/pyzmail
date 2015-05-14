@@ -45,9 +45,11 @@ class TestSend(unittest.TestCase):
         self.smtpd_thread=threading.Thread(target=asyncloop)
         self.smtpd_thread.daemon=True
         self.smtpd_thread.start()
+        time.sleep(0.1)
 
 
     def tearDown(self):
+        time.sleep(0.1)
         self.smtp_server.close()
         self.smtpd_thread.join()
 
@@ -63,14 +65,15 @@ class TestSend(unittest.TestCase):
 
     def test_send_to_a_wrong_port(self):
         """send to a wrong port"""
-        self.smtp_server.close()
-        ret=send_mail(self.payload, self.mail_from, self.rcpt_to, smtpd_addr, smtpd_port, smtp_mode=smtp_mode, smtp_login=smtp_login, smtp_password=smtp_password)
+        ret=send_mail(self.payload, self.mail_from, self.rcpt_to, smtpd_addr, smtp_bad_port, smtp_mode=smtp_mode, smtp_login=smtp_login, smtp_password=smtp_password)
         self.assertEqual(type(ret), str)
+        self.assertTrue('not responding' in ret or '111' in ret or 'Connection refused' in ret)
 
     def test_send_data_error(self):
         """smtp server return error code"""
-        ret=send_mail(self.payload, 'data_error@foo.com', self.rcpt_to, smtpd_addr, smtp_bad_port, smtp_mode=smtp_mode, smtp_login=smtp_login, smtp_password=smtp_password)
+        ret=send_mail(self.payload, 'data_error@foo.com', self.rcpt_to, smtpd_addr, smtpd_port, smtp_mode=smtp_mode, smtp_login=smtp_login, smtp_password=smtp_password)
         self.assertEqual(type(ret), str)
+        self.assertTrue('exceeded storage allocation' in ret)
 
 if __name__ == '__main__':
     unittest.main()

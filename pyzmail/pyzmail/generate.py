@@ -182,6 +182,7 @@ def build_mail(text, html=None, attachments=[], embeddeds=[]):
     <BLANKLINE>
     attached
     --===limit1==--
+    <BLANKLINE>
     """
 
     main=text_part=html_part=None
