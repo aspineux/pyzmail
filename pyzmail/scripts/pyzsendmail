@@ -91,7 +91,7 @@ def handle_content(arg, mail_charset):
             if not os.path.isfile(filename):
                 parser.error('file not found: '+filename)
             try:        
-                content=open(filename, 'rt').read()
+                content=open(filename, 'rb').read()
             except IOError, e:
                 parser.error(str(e))
 
@@ -123,7 +123,7 @@ def handle_attachment(arg):
         parser.error('Invalid type: '+type)
 
     try:        
-        data=open(target, 'r').read()
+        data=open(target, 'rb').read()
     except IOError, e:
         parser.error(str(e))
 
