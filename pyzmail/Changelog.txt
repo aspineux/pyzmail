@@ -1,16 +1,18 @@
 2015-xx-xx pyzmail-1.0.4
+  all:
+    - remove trailing white spaces in all sources and doc files
   generate.py:
     - header values can be email.header.Header instances (or unicode)
   pyzsendmail:
     - fix: binary attachments truncated on Windows
-    - fix: It is now possible to specify a path including a ':' in -a and -e 
+    - fix: It is now possible to specify a path including a ':' in -a and -e
       options by adding a trailing ':'
 
 2014-05-30 pyzmail-1.0.3
   all:
     - upgarde distribute_setup.py up to 0.6.49, to see if it work better with python 3.4
       not tested
- 
+
 2013-07-07 pyzmail-1.0.2
   parse.py:
     - fix a bug: AttributeError: 'str' object has no attribute 'get_content_type'
@@ -20,7 +22,7 @@
 
 2013-05-05 pyzmail-1.0.1
   parse.py:
-    - fix: "parse.py filename" raise an error, PyzMessage 
+    - fix: "parse.py filename" raise an error, PyzMessage
       don't accept a <file> as argument.
 
 2013-01-03 pyzmail-1.0.0
@@ -32,7 +34,7 @@
 
 2011-09-16 pyzmail-0.9.9
   pyzsendmail:
-    - small bug about arg_charset  
+    - small bug about arg_charset
 
 
 2011-09-13 pyzmail-0.9.8
@@ -40,15 +42,15 @@
   - support for python 3.2
   - added tests module
   - some documentation cosmetic
-  
+
   pyzsendmail:
   - removed a old debug message (print)
   - return 0 for success, 1 for error, 2 for failed addresses
-  
+
   generate:
-  - Message-ID instead of Messsage-ID with 3 's' 
-  - add support for free header fields 
-  
+  - Message-ID instead of Messsage-ID with 3 's'
+  - add support for free header fields
+
   parse:
   - PzMessage renamed into PyzMessage, PzMessage is now deprecated
 

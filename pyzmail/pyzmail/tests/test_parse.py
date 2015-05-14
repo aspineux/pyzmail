@@ -7,7 +7,7 @@ class Msg:
     """mimic a email.Message"""
     def __init__(self, value):
         self.value=value
-        
+
     def get_all(self, header_name, default):
         if self.value:
             return [self.value, ]
@@ -18,7 +18,7 @@ class TestParse(unittest.TestCase):
 
     def setUp(self):
         pass
-    
+
     def test_decode_mail_header(self):
         """test decode_mail_header()"""
         self.assertEqual(decode_mail_header(''), u'')
@@ -30,7 +30,7 @@ class TestParse(unittest.TestCase):
         self.assertEqual(decode_mail_header('=?iso-8859-1?q?Courrier_=E8lectronique_?= =?utf8?q?Fran=C3=A7ais?='), u'Courrier \xe8lectronique Fran\xe7ais')
         self.assertEqual(decode_mail_header('=?iso-8859-1?q?Courrier_=E8lectronique_?= =?utf-8?b?RnJhbsOnYWlz?='), u'Courrier \xe8lectronique Fran\xe7ais')
         self.assertEqual(decode_mail_header('h_subject_q_iso_8858_1 : =?ISO-8859-1?Q?Fran=E7ais=E20accentu=E9?= !'), u'h_subject_q_iso_8858_1 :Fran\xe7ais\xe20accentu\xe9!')
-   
+
     def test_get_mail_addresses(self):
         """test get_mail_addresses()"""
         self.assertEqual([ ('foo@example.com', 'foo@example.com') ], get_mail_addresses(Msg('foo@example.com'), 'to'))
@@ -40,9 +40,9 @@ class TestParse(unittest.TestCase):
         self.assertEqual([ ('Foo', 'foo@example.com'), ( 'Bar', 'bar@example.com')], get_mail_addresses(Msg('Foo <foo@example.com> , Bar <bar@example.com>'), 'to'))
         self.assertEqual([ ('Foo', 'foo@example.com'), ('bar@example.com', 'bar@example.com')], get_mail_addresses(Msg('Foo <foo@example.com> , bar@example.com'), 'to'))
         self.assertEqual([ ('Mr Foo', 'foo@example.com'), ('bar@example.com', 'bar@example.com')], get_mail_addresses(Msg('Mr\nFoo <foo@example.com> , bar@example.com'), 'to'))
-        
+
         self.assertEqual([ (u'Beno\xeet', 'benoit@example.com')], get_mail_addresses(Msg('=?utf-8?q?Beno=C3=AEt?= <benoit@example.com>'), 'to'))
-        
+
         # address already encoded into utf8 (bad)
         address=u'Ant\xf3nio Foo <a.foo@example.com>'.encode('utf8')
         if sys.version_info<(3, 0):
@@ -50,7 +50,7 @@ class TestParse(unittest.TestCase):
         else:
             # Python 3.2 return header when surrogate characters are used in header
             self.assertEqual([(u'Ant??nio Foo', 'a.foo@example.com'), ], get_mail_addresses(Msg(email.header.Header(address, charset=email.charset.UNKNOWN8BIT, header_name='to')), 'to'))
-        
+
     def test_get_filename(self):
         """test get_filename()"""
         import email.mime.image
@@ -60,7 +60,7 @@ class TestParse(unittest.TestCase):
             encoded_filename=filename.encode('iso-8859-1')
         else:
             encoded_filename=filename
-               
+
         payload=b'data'
         attach=email.mime.image.MIMEImage(payload, 'png')
         attach.add_header('Content-Disposition', 'attachment', filename='image.png')
@@ -69,7 +69,7 @@ class TestParse(unittest.TestCase):
         attach=email.mime.image.MIMEImage(payload, 'png')
         attach.add_header('Content-Disposition', 'attachment', filename=('iso-8859-1', 'fr', encoded_filename))
         self.assertEqual(u'Fran\xe7ais.png', get_filename(attach))
-        
+
         attach=email.mime.image.MIMEImage(payload, 'png')
         attach.set_param('name', 'image.png')
         self.assertEqual('image.png', get_filename(attach))
@@ -96,7 +96,7 @@ class TestParse(unittest.TestCase):
         image.add_header('Content-Description', 'the description')
         image.add_header('Content-ID', '<this.is.the.normaly.unique.contentid>')
         msg.attach(image)
-        
+
         raw=msg.as_string(unixfrom=False)
         expected_raw="""Content-Type: multipart/mixed; boundary="===limit1=="
 MIME-Version: 1.0
@@ -117,21 +117,21 @@ Content-ID: <this.is.the.normaly.unique.contentid>
 
 ZGF0YQ==<HERE1>
 --===limit1==--"""
-    
+
         if sys.version_info<(3, 0):
             expected_raw=expected_raw.replace('<HERE1>','')
         else:
             expected_raw=expected_raw.replace('<HERE1>','\n')
 
         self.assertEqual(raw, expected_raw)
-        
+
         parts=get_mail_parts(msg)
         # [MailPart<*text/plain charset=us-ascii len=9>, MailPart<image/png filename=image.png len=4>]
 
         self.assertEqual(len(parts), 2)
 
         self.assertEqual(parts[0].type, 'text/plain')
-        self.assertEqual(parts[0].is_body, 'text/plain') # not a error, is_body must be type 
+        self.assertEqual(parts[0].is_body, 'text/plain') # not a error, is_body must be type
         self.assertEqual(parts[0].charset, 'us-ascii')
         self.assertEqual(parts[0].get_payload().decode(parts[0].charset), 'The text.')
 
@@ -143,7 +143,7 @@ ZGF0YQ==<HERE1>
         self.assertEqual(parts[1].content_id, 'this.is.the.normaly.unique.contentid')
         self.assertEqual(parts[1].get_payload(), b'data')
 
-    
+
     raw_1='''Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -168,7 +168,7 @@ The text.
         self.assertEqual(msg.text_part, msg.mailparts[0])
         self.assertEqual(msg.html_part, None)
 
-    # use 8bits encoding and 2 different charsets ! python 3.0 & 3.1 are not eable to parse this sample 
+    # use 8bits encoding and 2 different charsets ! python 3.0 & 3.1 are not eable to parse this sample
     raw_2=b"""From: sender@domain.com
 To: recipient@domain.com
 Date: Tue, 7 Jun 2011 16:32:17 +0200
@@ -197,10 +197,10 @@ Content-Disposition: attachment; filename="file2.txt"
 bo\xc3\xaete mail = mailbox
 --mixed--
 """
-    
+
     def check_message_2(self, msg):
         self.assertEqual(msg.get_subject(), u'contains 8bits attachments using different encoding')
-    
+
         body, file1, file2=msg.mailparts
 
         self.assertEqual('file1.txt', file1.filename)
@@ -213,8 +213,8 @@ bo\xc3\xaete mail = mailbox
         self.assertEqual(content, content1)
         self.assertEqual(content, content2)
 
-    # this one contain non us-ascii chars in the header 
-    # py 2x and py3k return different value here  
+    # this one contain non us-ascii chars in the header
+    # py 2x and py3k return different value here
     raw_3=b'Content-Type: text/plain; charset="us-ascii"\n' \
           b'MIME-Version: 1.0\n' \
           b'Content-Transfer-Encoding: 7bit\n' \
@@ -237,12 +237,12 @@ bo\xc3\xaete mail = mailbox
         to=msg.get_addresses('to')
         self.assertEqual(to[0][1], 'a.foo@example.com')
         self.assertEqual(to[0][0], u'Ant\ufffd\ufffdnio Foo' if sys.version_info<(3, 0) else u'Ant??nio Foo')
-        
+
         cc=msg.get_addresses('cc')
         self.assertEqual(cc[0][1], 'benoit@foo.com')
         self.assertEqual(cc[0][0], u'Beno\ufffd\ufffdt' if sys.version_info<(3, 0) else u'Beno??t')
         self.assertEqual(cc[1], ('d@foo.com', 'd@foo.com'))
-        
+
         self.assertEqual(len(msg.mailparts), 1)
         self.assertEqual(msg.text_part, msg.mailparts[0])
         self.assertEqual(msg.html_part, None)
@@ -266,7 +266,7 @@ bo\xc3\xaete mail = mailbox
             import StringIO
             check(PyzMessage.factory(StringIO.StringIO(input)))
             check(message_from_file(StringIO.StringIO(input)))
-        
+
     def test_pyzmessage_factories(self):
         """test PyzMessage class different sources"""
         self.check_pyzmessage_factories(self.raw_1, self.check_message_1)
@@ -274,10 +274,10 @@ bo\xc3\xaete mail = mailbox
         self.check_pyzmessage_factories(self.raw_3, self.check_message_3)
 
 
-# Add doctest 
+# Add doctest
 def load_tests(loader, tests, ignore):
     # this works with python 2.7 and 3.x
-    if sys.version_info<(3, 0): 
+    if sys.version_info<(3, 0):
         tests.addTests(doctest.DocTestSuite(pyzmail.parse))
     return tests
 

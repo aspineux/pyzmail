@@ -9,15 +9,15 @@ epydoc:
 
 sphinx:
 	cd docs ; make html man
-	cp ./docs/build/man/* man 
-	cp ./docs/build/html/man/* man 
+	cp ./docs/build/man/* man
+	cp ./docs/build/html/man/* man
 
 test:
 	python setup.py test
 
 test3:
 	sudo rm -rf build ; ${python3} setup.py test
-	
+
 py3:
 	mkdir -p py3k
 	rm -rf py3k/*

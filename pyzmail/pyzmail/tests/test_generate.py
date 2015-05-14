@@ -6,7 +6,7 @@ class TestGenerate(unittest.TestCase):
 
     def setUp(self):
         pass
-    
+
     def test_format_addresses(self):
         """test format_addresse"""
         self.assertEqual('foo@example.com', str(format_addresses([ 'foo@example.com', ])))
@@ -16,7 +16,7 @@ class TestGenerate(unittest.TestCase):
         # notice the space around the comma
         self.assertEqual('Foo <foo@example.com> , Bar <bar@example.com>', str(format_addresses([ ('Foo', 'foo@example.com'), ( 'Bar', 'bar@example.com')])))
 
-# Add doctest 
+# Add doctest
 def load_tests(loader, tests, ignore):
     # this works with python 2.7 and 3.x
     tests.addTests(doctest.DocTestSuite(pyzmail.generate))

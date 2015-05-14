@@ -28,8 +28,8 @@ class BadEmailAddress(ValueError):
 
 def handle_addr(addr):
     """
-    split an address in its name and mail address 
-    
+    split an address in its name and mail address
+
     >>> handle_addr('Foo Bar <foo.bar@example.com>')
     ('Foo Bar', 'foo.bar@example.com')
     >>> handle_addr(' Foo Bar  <  foo.bar@example.com  >  ')
@@ -51,7 +51,7 @@ def handle_addr(addr):
     Traceback (most recent call last):
     BadEmailAddress: Foo Bar foo.bar@example.com>
     """
-    
+
     addr=addr.strip()
     pos=addr.rfind('<')
     if pos>=0 and addr.endswith('>'):
@@ -65,24 +65,24 @@ def handle_addr(addr):
 
     if not pyzmail.email_address_re.match(address):
         raise BadEmailAddress, address
-    
+
     return name, address
 
 
 def handle_content(arg, mail_charset):
     """
     handle file content argument
-    
+
     format: encoding:@filename
             encoding:content
     return (encoding, content)
     """
-    
+
     try:
         encoding, content=arg.split(':', 1)
     except ValueError:
         parser.error('Wrong file argument: '+arg)
-           
+
     if content.startswith('@'):
         filename=content[1:]
         if filename=='-':
@@ -90,7 +90,7 @@ def handle_content(arg, mail_charset):
         else:
             if not os.path.isfile(filename):
                 parser.error('file not found: '+filename)
-            try:        
+            try:
                 content=open(filename, 'rb').read()
             except IOError, e:
                 parser.error(str(e))
@@ -98,16 +98,16 @@ def handle_content(arg, mail_charset):
     if not encoding:
         encoding=mail_charset
     return content, encoding
-        
+
 def handle_attachment(arg):
     """
     handle attachment argument
-    
+
     format: maintype/subtpe:filename:target_file[:charset]
 
     return (data, maintype, subtype, filename, charset)
     """
-    
+
     try:
         typ, filename, target=arg.split(':', 2)
 
@@ -133,7 +133,7 @@ def handle_attachment(arg):
     except ValueError:
         parser.error('Invalid type: '+typ)
 
-    try:        
+    try:
         data=open(target, 'rb').read()
     except IOError, e:
         parser.error(str(e))
@@ -146,7 +146,7 @@ def check_addr(value):
         ret=handle_addr(value)
     except BadEmailAddress:
         parser.error('invalid address: '+value)
-        
+
     return ret
 
 def check_addresses(values):
@@ -156,9 +156,9 @@ def check_addresses(values):
             ret.append(handle_addr(value))
         except BadEmailAddress:
             parser.error('invalid address: '+value)
-        
+
     return ret
-   
+
 default_encoding=locale.getdefaultlocale()[1]
 if not default_encoding:
     # use default per platform
@@ -169,15 +169,15 @@ if not default_encoding:
 
 def gen_parser():
     parser=optparse.OptionParser()
-    
+
     parser.add_option("-V", "--version", action="store_true", dest="version", help="display version")
-    
+
     parser.add_option("-H", "--smtp-host", dest="smtp_host", help="SMTP host relay", metavar="name_or_ip", default='localhost')
     parser.add_option("-p", "--smtp-port", dest="smtp_port", help="SMTP port (default=25)", metavar="port", type='int', default='25')
     parser.add_option("-L", "--smtp-login", dest="smtp_login", help="SMTP login (if authentication is required)", metavar="login", type='string')
     parser.add_option("-P", "--smtp-password", dest="smtp_password", help="SMTP password (if authentication is required)", metavar="password", type='string')
     parser.add_option("-m", "--smtp-mode", dest="smtp_mode", help="smtp mode in 'normal', 'ssl', 'tls'. (default='normal')", metavar="mode", type='choice', default='normal', choices=('normal', 'ssl', 'tls'))
-    
+
     if sys.version_info<=(3, 0):
         parser.add_option("-A", "--arg-charset", dest="arg_charset", help="these arguments charset (default=%s)" % (default_encoding, ), metavar="charset", type='string', default=default_encoding)
     else:
@@ -185,14 +185,14 @@ def gen_parser():
         pass
 
     parser.add_option("-C", "--mail-charset", dest="mail_charset", help="default charset (default=%s)" % (default_encoding, ), metavar="charset", type='string', default=default_encoding)
-    
+
     parser.add_option("-f", "--from", dest="sender", help="sender address", metavar="sender", type='string')
     parser.add_option("-t", "--to", action="append", dest="to", help="add one recipient address", metavar="recipient", type='string', default=[])
     parser.add_option("-c", "--cc", action="append", dest="cc", help="add one cc address", metavar="recipient", type='string', default=[])
     parser.add_option("-b", "--bcc", action="append", dest="bcc", help="add one bcc address", metavar="recipient", type='string', default=[])
-    
+
     parser.add_option("-s", "--subject", dest="subject", help="message subject", metavar="subject", type='string', default='no subject')
-    
+
     parser.add_option("-T", "--text", dest="text", help="text content '[text_charset]:@filename' or '[text_charset]:content' for example", metavar="text", type='string', default='')
     parser.add_option("-M", "--html", dest="html", help="html content '[text_charset]:@filename' or '[text_charset]:content'", metavar="html", type='string', default='')
     parser.add_option("-a", "--attach", action="append", dest="attachments", help="add an attachment 'maintype/subtype:filename:target_file[:text_charset]'", metavar="file", type='string', default=[])
@@ -207,7 +207,7 @@ if sys.version_info<=(3, 0):
     arg_charset=options.arg_charset
     sys_argv=map(lambda x:x.decode(arg_charset), sys.argv[:])
 else:
-    # py3k does it well 
+    # py3k does it well
     sys_argv=sys.argv[:]
 
 # use a new parser
@@ -224,7 +224,7 @@ if options.version:
     print 'stdin.encoding: %s' % (sys.stdin.encoding, )
     print 'stdout.encoding: %s' % (sys.stdout.encoding, )
     sys.exit(9)
-    
+
 # Misc
 mail_charset=options.mail_charset
 subject=options.subject
@@ -251,16 +251,16 @@ if options.cc:
 bcc=[]
 if options.bcc:
     bcc=check_addresses(options.bcc)
- 
+
 if not to and not cc and not bcc:
      parser.error('no recipient')
 
-# Content 
+# Content
 if options.text:
     text=handle_content(options.text, mail_charset)
 else:
     text=None
-        
+
 if options.html:
     html=handle_content(options.html, mail_charset)
 else:
@@ -288,7 +288,7 @@ for embedded in options.embeddeds:
 
 payload, mail_from, rcpt_to, msg_id=pyzmail.compose_mail(sender, to, subject, mail_charset, text, html, attachments=attachments, embeddeds=embeddeds, cc=cc, bcc=bcc, message_id_string='pyzsendmail')
 ret=pyzmail.send_mail(payload, mail_from, rcpt_to, options.smtp_host, smtp_port=options.smtp_port, smtp_mode=options.smtp_mode, smtp_login=options.smtp_login, smtp_password=options.smtp_password)
-    
+
 if isinstance(ret, dict):
     if ret:
         print 'failed recipients:'

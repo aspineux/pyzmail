@@ -11,7 +11,7 @@ Synopsis
 Description
 -----------
 
-**pyzinfomail** parse and display some data from an email. This is mostly a 
+**pyzinfomail** parse and display some data from an email. This is mostly a
 sample on how to use the **pyzmail** library.
 
 
@@ -20,7 +20,7 @@ Sample
 
 usage::
 
-    $ pyzinfomail mail.eml 
+    $ pyzinfomail mail.eml
     Subject: u'The subject'
     From: (u'Sender', 'sender@example.com')
     To: [(u'Recipient', 'recipient@example.com')]
@@ -30,8 +30,8 @@ usage::
        *filename=None type=text/plain charset=ISO-8859-1 desc=None size=13
            > Hello World
        *filename=None type=text/html charset=ISO-8859-1 desc=None size=23
- 
-                       
+
+
 See also
 --------
 
@@ -41,4 +41,3 @@ Author
 ------
 
 Alain Spineux <alain.spineux@gmail.com>
-                        

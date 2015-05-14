@@ -50,7 +50,7 @@ for mailpart in msg.mailparts:
 
     if mailpart.is_body=='text/plain':
         # print first 3 lines
-        payload, used_charset=pyzmail.decode_text(mailpart.get_payload(), mailpart.charset, None) 
+        payload, used_charset=pyzmail.decode_text(mailpart.get_payload(), mailpart.charset, None)
         for line in payload.split('\n')[:3]:
             # be careful console can be unable to display unicode characters
             if line:

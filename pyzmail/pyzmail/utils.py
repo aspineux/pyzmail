@@ -16,17 +16,17 @@ invalid_chars_in_filename=b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c
                           b'\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f' \
                           b'<>:"/\\|?*\%\''
 
-invalid_windows_name=[b'CON', b'PRN', b'AUX', b'NUL', b'COM1', b'COM2', b'COM3', 
-                      b'COM4', b'COM5', b'COM6', b'COM7', b'COM8', b'COM9', 
+invalid_windows_name=[b'CON', b'PRN', b'AUX', b'NUL', b'COM1', b'COM2', b'COM3',
+                      b'COM4', b'COM5', b'COM6', b'COM7', b'COM8', b'COM9',
                       b'LPT1', b'LPT2', b'LPT3', b'LPT4', b'LPT5', b'LPT6', b'LPT7',
                       b'LPT8', b'LPT9' ]
 
 def sanitize_filename(filename, alt_name, alt_ext):
     """
-    Convert the given filename into a name that should work on all 
+    Convert the given filename into a name that should work on all
     platform. Remove non us-ascii characters, and drop invalid filename.
     Use the I{alternative} filename if needed.
-    
+
     @type filename: unicode or None
     @param filename: the originale filename or None. Can be unicode.
     @type alt_name: str
@@ -36,7 +36,7 @@ def sanitize_filename(filename, alt_name, alt_ext):
 
     @rtype: str
     @returns: a valid filename.
-     
+
     >>> sanitize_filename('document.txt', 'file', '.txt')
     'document.txt'
     >>> sanitize_filename('number1.txt', 'file', '.txt')
@@ -50,22 +50,22 @@ def sanitize_filename(filename, alt_name, alt_ext):
     'file.html'
     >>> # all non us-ascii characters have been removed, the alternative name
     >>> # has been used the replace empty string. The originale extention
-    >>> # is still valid  
+    >>> # is still valid
     >>> sanitize_filename(u'COM1.txt', 'file', '.txt')
     'COM1A.txt'
     >>> # if name match an invalid name or assimilated then a A is added
     """
-    
+
     if not filename:
         return alt_name+alt_ext
 
     if ((sys.version_info<(3, 0) and isinstance(filename, unicode)) or \
         (sys.version_info>=(3, 0) and isinstance(filename, str))):
         filename=filename.encode('ascii', 'ignore')
-    
+
     filename=filename.translate(None, invalid_chars_in_filename)
     filename=filename.strip()
-        
+
     upper=filename.upper()
     for name in invalid_windows_name:
         if upper==name:
@@ -87,21 +87,21 @@ def sanitize_filename(filename, alt_name, alt_ext):
 def handle_filename_collision(filename, filenames):
     """
     Avoid filename collision, add a sequence number to the name when required.
-    'file.txt' will be renamed into 'file-01.txt' then 'file-02.txt' ... 
+    'file.txt' will be renamed into 'file-01.txt' then 'file-02.txt' ...
     until their is no more collision. The file is not added to the list.
-     
+
     Windows don't make the difference between lower and upper case. To avoid
     "case" collision, the function compare C{filename.lower()} to the list.
-    If you provide a list in lower case only, then any collisions will be avoided.     
-    
+    If you provide a list in lower case only, then any collisions will be avoided.
+
     @type filename: str
     @param filename: the filename
     @type filenames: list or set
-    @param filenames: a list of filenames. 
+    @param filenames: a list of filenames.
 
     @rtype: str
-    @returns: the I{filename} or the appropriately I{indexed} I{filename} 
-     
+    @returns: the I{filename} or the appropriately I{indexed} I{filename}
+
     >>> handle_filename_collision('file.txt', [ ])
     'file.txt'
     >>> handle_filename_collision('file.txt', [ 'file.txt' ])
@@ -120,7 +120,7 @@ def handle_filename_collision(filename, filenames):
             basename, ext=filename.rsplit('.', 1)
             ext='.'+ext
         except ValueError:
-            basename, ext=filename, '' 
+            basename, ext=filename, ''
 
         i=1
         while True:
@@ -128,13 +128,13 @@ def handle_filename_collision(filename, filenames):
             if filename.lower() not in filenames:
                 break
             i+=1
-        
+
     return filename
 
 def is_usascii(value):
     """"
     test if string contains us-ascii characters only
-    
+
     >>> is_usascii('foo')
     True
     >>> is_usascii(u'foo')
@@ -150,6 +150,6 @@ def is_usascii(value):
         value.encode('us-ascii')
     except UnicodeError:
         return False
-    
+
     return True
- 
+

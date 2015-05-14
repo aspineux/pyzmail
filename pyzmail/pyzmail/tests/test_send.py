@@ -4,22 +4,22 @@ import pyzmail
 from pyzmail.generate import *
 
 
-smtpd_addr='127.0.0.1' 
+smtpd_addr='127.0.0.1'
 smtpd_port=32525
 smtp_bad_port=smtpd_port-1
 
 smtp_mode='normal'
 smtp_login=None
 smtp_password=None
-    
+
 
 class SMTPServer(smtpd.SMTPServer):
     def __init__(self, localaddr, remoteaddr, received):
         smtpd.SMTPServer.__init__(self, localaddr, remoteaddr)
         self.set_reuse_addr()
-        # put the received mail into received list 
+        # put the received mail into received list
         self.received=received
-        
+
     def process_message(self, peer, mail_from, rcpt_to, data):
         ret=None
         if mail_from.startswith('data_error'):
@@ -37,10 +37,10 @@ class TestSend(unittest.TestCase):
             # check every sec if all channel are close
             asyncore.loop(1)
 
-                    
+
         self.payload, self.mail_from, self.rcpt_to, self.msg_id=compose_mail((u'Me', 'me@foo.com'), [(u'Him', 'him@bar.com')], u'the subject', 'iso-8859-1', ('Hello world', 'us-ascii'))
 
-        # start the server after having built the payload, to handle failure in 
+        # start the server after having built the payload, to handle failure in
         # the code above
         self.smtpd_thread=threading.Thread(target=asyncloop)
         self.smtpd_thread.daemon=True
@@ -50,7 +50,7 @@ class TestSend(unittest.TestCase):
     def tearDown(self):
         self.smtp_server.close()
         self.smtpd_thread.join()
-        
+
     def test_simple_send(self):
         """simple send"""
         ret=send_mail(self.payload, self.mail_from, self.rcpt_to, smtpd_addr, smtpd_port, smtp_mode=smtp_mode, smtp_login=smtp_login, smtp_password=smtp_password)
