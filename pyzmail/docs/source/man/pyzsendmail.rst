@@ -99,16 +99,19 @@ Options
     add an attachment in the form:
         maintype/subtype:filename:target_file[:text_charset]
     for example
-        image/jpg:picture.jpg:C:\\thepicture.png
+        image/jpg:picture.jpg:thepicture.png
     or
-        text/plain:file.txt:C:\\report.txt:[windows-1252]
-    
+        image/jpg:picture.jpg:C:\\thepicture.png:
+        (notice the trailing ':' to disambiguate the : of the drive letter) 
+    or
+        text/plain:file.txt:C:\\report.txt:windows-1252
+
 .. option:: -e file, --embed=file
 
     add embedded data in the form:
         maintype/subtype:content-id:target_file[:text_charset]
     for example
-        image/jpg:picture:C:\\thepicture.png
+        image/jpg:picture:thepicture.png
     
 .. option:: -E, --eicar
            
@@ -159,7 +162,7 @@ Samples
 
 ::
 
-    pyzsendmail -H localhost -p 25 -f "Me <me\@example.com>" -t "foo\@example.com" -t "Bar <bar\@example.com" -s "The subject" -T :"Hello" -a image/jpg:holiday.png:C:\\Holiday.png
+    pyzsendmail -H localhost -p 25 -f "Me <me\@example.com>" -t "foo\@example.com" -t "Bar <bar\@example.com" -s "The subject" -T :"Hello" -a image/jpg:holiday.png:C:\\Holiday.png:
 
                         
 See also

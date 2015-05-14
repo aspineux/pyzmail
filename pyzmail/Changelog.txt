@@ -1,6 +1,10 @@
-2015-xx-xx pyzmail-1.0.
-   generate.py:
+2015-xx-xx pyzmail-1.0.4
+  generate.py:
     - header values can be email.header.Header instances (or unicode)
+  pyzsendmail:
+    - fix: binary attachments truncated on Windows
+    - fix: It is now possible to specify a path including a ':' in -a and -e 
+      options by adding a trailing ':'
 
 2014-05-30 pyzmail-1.0.3
   all:

@@ -12,7 +12,7 @@ import os
 import optparse
 import locale
 
-__version__='1.0'
+__version__='1.0.4'
 
 try:
     import pyzmail
@@ -104,23 +104,34 @@ def handle_attachment(arg):
     handle attachment argument
     
     format: maintype/subtpe:filename:target_file[:charset]
-            encoding:content
+
     return (data, maintype, subtype, filename, charset)
     """
     
     try:
-        type, filename, target=arg.split(':', 2)
+        typ, filename, target=arg.split(':', 2)
+
         try:
-            target, charset=target.split(':', 1)
+            # If the target filename is a Windows path containing a ':',
+            # the ':' of the charset must be present. The charset can be empty
+            # if their is 2 ':' then the 1st one is part of the target
+            driveletter, target, charset=target.split(':', 2)
+            target=driveletter+':'+target
         except ValueError:
-            charset=None
+            try:
+                target, charset=target.split(':', 1)
+            except ValueError:
+                charset=None
     except ValueError:
         parser.error('Wrong attachment argument: '+arg)
 
+    if not charset:
+        charset=None
+
     try:
-        maintype, subtype=type.split('/')
+        maintype, subtype=typ.split('/')
     except ValueError:
-        parser.error('Invalid type: '+type)
+        parser.error('Invalid type: '+typ)
 
     try:        
         data=open(target, 'rb').read()
