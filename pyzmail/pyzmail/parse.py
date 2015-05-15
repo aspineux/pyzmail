@@ -463,7 +463,8 @@ def get_mail_parts(msg):
             # ('message/delivery-status', 'message/rfc822', 'message/disposition-notification'):
             # I don't want to explore the tree deeper her and just save source using msg.as_string()
             # but I don't use msg.as_string() because I want to use mangle_from_=False
-            filename='message.eml'
+            filename=get_filename(part)
+            filename=filename if filename else 'message.eml'
             mailparts.append(MailPart(part, filename=filename, type=type, charset=part.get_param('charset'), description=part.get('Content-Description')))
         elif part.is_multipart():
             # insert new parts at the beginning of the stack (deep first search)
